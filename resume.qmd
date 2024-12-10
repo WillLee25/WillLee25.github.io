@@ -1,89 +1,71 @@
 ---
 layout: cv
-title: Isaac Newtons's CV
 ---
-# Isaac Newton
-Physicist, Mathematician, Cambridge professor.
+# William Russell Lee
+Supply Chain (Operations) Management Student with Data Science Minor
 
 <div id="webaddress">
-<a href="isaac@applesdofall.org">isaac@applesdofall.org</a>
-| <a href="http://en.wikipedia.org/wiki/Isaac_Newton">My wikipedia page</a>
+<a href="mailto:w.r.lee217@gmail.com">w.r.lee217@gmail.com</a> | +1 (480) 353-0673 | [LinkedIn](https://www.linkedin.com/in/william-lee-466456251)
 </div>
-
-
-## Currently
-
-Standing on the shoulders of giants
-
-### Specialized in
-
-Laws of motion, gravitation, minting coins, disliking [Robert Hooke](http://en.wikipedia.org/wiki/Robert_Hooke)
-
-
-### Research interests
-
-Cooling, power series, optics, alchemy, planetary motions, apples.
-
 
 ## Education
 
-`1654-1660`
-__The King's School, Grantham.__
+`Sep 2022 - Jul 2025`  
+__Brigham Young University - Idaho__
+Rexburg, Idaho  
 
-`June 1661 - now`
-__Trinity College, Cambridge__
+- Bachelors of Science in Supply Chain (Operations) Management  
+- Data Science Minor  
+- Organizations: Supply Chain Management Society & Data Science Society  
 
-- Sizar
+## Work Experience
 
-`1667 - death`
-__Trinity College, Cambridge__
+`Aug 2024 - Present`  
+__Merchandising Assistant Intership__
+Country Supplier LLC, Ammon, Idaho
 
-- Fellow
+Generated weekly savings of $50,000 by analyzing monthly sales data and inventory levels, informing purchasing decisions and optimizing stock management for pet consumables, food, and lawn and garden equipment.
+Collaborated with vendors and buyers daily to ensure accurate and timely deliveries.
+Resolved daily issues for CAL Ranch and Coastal stores related to receiving, special orders, and cancellations, streamlining operations.
 
+`May 2023 - Aug 2024`  
+__Sales Solution Specialist__
+Safe Streets USA, Rexburg, Idaho  
 
+Conducted daily analysis of client accounts to maintain compliance and identify areas for improvement, averaging 10 accounts per day.
+Reviewed at least 5 equipment orders and delivery schedules daily to ensure timely arrival of technicians and fulfillment of client needs.
+Built strong relationships with technicians, sales reps, and clients, fostering collaboration and productivity.
 
-## Awards
+`Jan 2023 - Apr 2023`  
+__Front of House Team Member__
+Chick-Fil-A, Queen Creek, Arizona
 
-`2012`
-President, *Royal Society*, London, UK
+Managed efficient receipt and placement of over 1800 customer orders monthly.
+Expedited and delivered more than 900 customer orders promptly, proactively adding missing items as necessary.
+Conducted regular reviews of inventory for cups, lids, sauces, and utensils every 30 minutes to prevent stockouts and ensure uninterrupted service.
 
-Associate, *French Academy of Science*, Paris, France
+## Skills
 
+- __Programming Languages__: SQL (Basic), Python (Basic), VBA (Basic)
+- __Excel__: XLOOKUP, Macros, Pivot Tables
+- __Languages__: English (Native), Spanish (Intermediate)
 
+## Volunteer Experience
 
-## Publications
+`Aug 2020 - Jul 2022`  
+__Full Time Service Volunteer__
+Church of Jesus Christ of Latter-day Saints, Salt Lake City, USA | Santiago, Chile  
+Employed proactive outreach strategies, including door knocking and referrals, to connect with community members and offer volunteer service and guidance.
+Analyzed progression data of community members and weekly volunteer activity to identify trends and optimize support strategies.
 
-<!-- A list is also available [online](http://scholar.google.co.uk/citations?user=LTOTl0YAAAAJ) -->
-
-### Journals
-
-`1669`
-Newton Sir I, De analysi per æquationes numero terminorum infinitas. 
-
-`1669`
-Lectiones opticæ.
-
-etc. etc. etc.
-
-### Patents
-
-`2012`
-Infinitesimal calculus for solutions to physics problems, [SMBC](http://www.techdirt.com/articles/20121011/09312820678/if-patents-had-been-around-time-newton.shtml) patent 001
-
-
-## Occupation
-
-`1600`
-__Royal Mint__, London
-
-- Warden
-- Minted coins
-
-`1600`
-__Lucasian professor of Mathematics__, Cambridge University
-
+`Jan 2017 - Jun 2018`  
+__Eagle Scout Project__
+Boy Scouts of America, Mesa, Arizona  
+Led a hygiene drive ensuring foster children had access to essential hygiene necessities.
+Coordinated distribution of informational fliers to over 500 households in a densely populated area.
+Delivered over 50 bags of hygiene items to Helen's Hope Chest, supporting underprivileged children.
 
 
 <!-- ### Footer
 
-Last updated: May 2013 -->
+Last updated: November 2024 -->
