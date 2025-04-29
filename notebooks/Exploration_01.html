@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data Exploration 01 – William Lee - Data Science Portfolio</title>
+<title>exploration_01 – William Lee - Data Science Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -342,7 +342,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#mpaa-movie-ratings" id="toc-mpaa-movie-ratings" class="nav-link active" data-scroll-target="#mpaa-movie-ratings">MPAA Movie Ratings:</a></li>
+  <li><a href="#data-exploration-01" id="toc-data-exploration-01" class="nav-link active" data-scroll-target="#data-exploration-01">Data Exploration 01</a>
+  <ul class="collapse">
+  <li><a href="#mpaa-movie-ratings" id="toc-mpaa-movie-ratings" class="nav-link" data-scroll-target="#mpaa-movie-ratings">MPAA Movie Ratings:</a></li>
   <li><a href="#part-1-import-pandas" id="toc-part-1-import-pandas" class="nav-link" data-scroll-target="#part-1-import-pandas">Part 1: Import Pandas</a></li>
   <li><a href="#part-2-load-the-data" id="toc-part-2-load-the-data" class="nav-link" data-scroll-target="#part-2-load-the-data">Part 2: Load the data</a>
   <ul class="collapse">
@@ -361,6 +363,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#seaborn" id="toc-seaborn" class="nav-link" data-scroll-target="#seaborn">Seaborn</a></li>
   <li><a href="#pandas-built-in-plotting" id="toc-pandas-built-in-plotting" class="nav-link" data-scroll-target="#pandas-built-in-plotting">Pandas built-in plotting</a></li>
   </ul></li>
+  </ul></li>
   <li><a href="#part-5-interpretation-and-conclusions" id="toc-part-5-interpretation-and-conclusions" class="nav-link" data-scroll-target="#part-5-interpretation-and-conclusions">Part 5: Interpretation and Conclusions</a>
   <ul class="collapse">
   <li><a href="#above-and-beyond" id="toc-above-and-beyond" class="nav-link" data-scroll-target="#above-and-beyond">🌟 Above and Beyond 🌟</a></li>
@@ -369,28 +372,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Data Exploration 01</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
 
 
-</header>
-
-
+<p><a href="https://colab.research.google.com/github/WillLee25/WillLee25.github.io/blob/main/notebooks/Exploration_01.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
+<section id="data-exploration-01" class="level1">
+<h1>Data Exploration 01</h1>
 <p>A consumer watchdog group wants to see if Netflix has more movies for adults or children.</p>
 <p>Using a dataset containing metadata for all of the movies Netflix had available on their platform in 2019, we’ll use the MPAA movie rating system to determine if they are correct.</p>
 <section id="mpaa-movie-ratings" class="level2">
@@ -925,10 +915,58 @@ memory usage: 165.9 MB</pre>
 <h2 class="anchored" data-anchor-id="part-3-filter-the-data">Part 3: Filter the Data</h2>
 <p>Since we’re just interested in movies, we’ll need to <a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/03_subset_data.html">filter out anything</a> that isn’t a movie for our analysis. The <code>type</code> feature contains this information.</p>
 <p>Once we have the subset, we should see how many rows it contains. There are a <a href="https://stackoverflow.com/a/38025280/28106">variety of ways to get the length of a data frame</a>.</p>
-<div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;python&quot;}}">
+<div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:561}}" data-outputid="94cef8fc-8ce2-4d11-f3bd-a95b7d39fbbe" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use pandas's filtering abilitites to select the subset of data</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># that represents movies, then calculate how many rows are in the filtered data.</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>only_movies <span class="op">=</span> [movies[<span class="bu">type</span>] <span class="op">==</span> <span class="st">"movies"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>only_movies <span class="op">=</span> [movies[<span class="bu">type</span>] <span class="op">==</span> <span class="st">"Movie"</span>]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>only_movies.index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">/usr/local/lib/python3.11/dist-packages/pandas/core/indexes/base.py</span> in <span class="ansi-cyan-fg">get_loc</span><span class="ansi-blue-fg">(self, key)</span>
+<span class="ansi-green-fg ansi-bold">   3804</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 3805</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_engine<span class="ansi-blue-fg">.</span>get_loc<span class="ansi-blue-fg">(</span>casted_key<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg ansi-bold">   3806</span>         <span class="ansi-green-fg">except</span> KeyError <span class="ansi-green-fg">as</span> err<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">index.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.index.IndexEngine.get_loc</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">index.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.index.IndexEngine.get_loc</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">pandas/_libs/hashtable_class_helper.pxi</span> in <span class="ansi-cyan-fg">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">pandas/_libs/hashtable_class_helper.pxi</span> in <span class="ansi-cyan-fg">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-red-fg">KeyError</span>: &lt;class 'pandas.core.frame.DataFrame'&gt;
+
+The above exception was the direct cause of the following exception:
+
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-9-d1d294c15664&gt;</span> in <span class="ansi-cyan-fg">&lt;cell line: 0&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg ansi-bold">      1</span> <span class="ansi-red-fg"># Use pandas's filtering abilitites to select the subset of data</span>
+<span class="ansi-green-fg ansi-bold">      2</span> <span class="ansi-red-fg"># that represents movies, then calculate how many rows are in the filtered data.</span>
+<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg"> </span>only_movies <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>movies<span class="ansi-blue-fg">[</span>type<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">"movies"</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-fg ansi-bold">      4</span> 
+<span class="ansi-green-fg ansi-bold">      5</span> only_movies<span class="ansi-blue-fg">.</span>index
+
+<span class="ansi-green-fg">/usr/local/lib/python3.11/dist-packages/pandas/core/frame.py</span> in <span class="ansi-cyan-fg">__getitem__</span><span class="ansi-blue-fg">(self, key)</span>
+<span class="ansi-green-fg ansi-bold">   4100</span>             <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>columns<span class="ansi-blue-fg">.</span>nlevels <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg ansi-bold">   4101</span>                 <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_getitem_multilevel<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">-&gt; 4102</span><span class="ansi-red-fg">             </span>indexer <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>columns<span class="ansi-blue-fg">.</span>get_loc<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg ansi-bold">   4103</span>             <span class="ansi-green-fg">if</span> is_integer<span class="ansi-blue-fg">(</span>indexer<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg ansi-bold">   4104</span>                 indexer <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>indexer<span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">/usr/local/lib/python3.11/dist-packages/pandas/core/indexes/base.py</span> in <span class="ansi-cyan-fg">get_loc</span><span class="ansi-blue-fg">(self, key)</span>
+<span class="ansi-green-fg ansi-bold">   3810</span>             ):
+<span class="ansi-green-fg ansi-bold">   3811</span>                 <span class="ansi-green-fg">raise</span> InvalidIndexError<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">-&gt; 3812</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> KeyError<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">from</span> err
+<span class="ansi-green-fg ansi-bold">   3813</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg ansi-bold">   3814</span>             <span class="ansi-red-fg"># If we have a listlike key, _check_indexing_error will raise</span>
+
+<span class="ansi-red-fg">KeyError</span>: &lt;class 'pandas.core.frame.DataFrame'&gt;</pre>
+</div>
+</div>
 </div>
 <section id="mpaa-ratings" class="level3">
 <h3 class="anchored" data-anchor-id="mpaa-ratings">MPAA Ratings</h3>
@@ -1046,6 +1084,7 @@ ax.set_xlabel("Job title")</code></pre>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This will be a little trickier than the other libraries, but one hint is that the pandas value_counts() function</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># actually returns a dataframe.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 </section>
 </section>
 <section id="part-5-interpretation-and-conclusions" class="level1">
