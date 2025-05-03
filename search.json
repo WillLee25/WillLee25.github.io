@@ -172,6 +172,212 @@
     ]
   },
   {
+    "objectID": "notebooks/Exploration_02.html",
+    "href": "notebooks/Exploration_02.html",
+    "title": "Data Exploration 02",
+    "section": "",
+    "text": "You’re working as a data analyst at a cereal marketing company in New York.\nIn a strategy meeting, the marketing director tells you that in 2018, the US weight loss industry was worth over $72 Billion dollars, growing 4% compared to the previous year.\nIn contrast, sales of cold cereal fell 6% to $8.5 billion during the same time period.\nCereal executives have approached the marketing company asking how they can somehow tap into the weight loss market growth to boost the sales of their cereal brands.\nYour assignment is to analyze a dataset of nutritional information for major US cereals, and calculate some metrics that can be used by the marketing team."
+  },
+  {
+    "objectID": "notebooks/Exploration_02.html#part-1-import-pandas-and-load-the-data",
+    "href": "notebooks/Exploration_02.html#part-1-import-pandas-and-load-the-data",
+    "title": "Data Exploration 02",
+    "section": "Part 1: Import Pandas and load the data",
+    "text": "Part 1: Import Pandas and load the data\nRemember to import Pandas the conventional way. If you’ve forgotten how, you may want to review Data Exploration 01.\nThe dataset for this exploration is stored at the following url:\nhttps://raw.githubusercontent.com/byui-cse/cse450-course/master/data/cereal.csv\nThere are lots of ways to load data into your workspace. The easiest way in this case is to ask Pandas to do it for you.\n\nInitial Data Analysis\nOnce you’ve loaded the data, it’s a good idea to poke around a little bit to find out what you’re dealing with.\nSome questions you might ask include:\n\nWhat does the data look like?\nWhat kind of data is in each column?\nDo any of the columns have missing values?\n\n\n# Part 1: Enter your code below to import Pandas according to the\n# conventional method. Then load the dataset into a Pandas dataframe.\n\n# Write any code needed to explore the data by seeing what the first few\n# rows look like. Then display a technical summary of the data to determine\n# the data types of each column, and which columns have missing data.\nimport pandas as pd\n\ndf = pd.read_csv(\"https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/cereal.csv\")\n\ndf.head()\n\n\n    \n\n\n\n\n\n\nname\nmfr\ntype\ncalories\nprotein\nfat\nsodium\nfiber\ncarbo\nsugars\npotass\nvitamins\nshelf\nweight\ncups\nrating\n\n\n\n\n0\n100% Bran\nN\nC\n70\n4\n1\n130\n10.0\n5.0\n6\n280\n25\n3\n1.0\n0.33\n68.402973\n\n\n1\n100% Natural Bran\nQ\nC\n120\n3\n5\n15\n2.0\n8.0\n8\n135\n0\n3\n1.0\n1.00\n33.983679\n\n\n2\nAll-Bran\nK\nC\n70\n4\n1\n260\n9.0\n7.0\n5\n320\n25\n3\n1.0\n0.33\n59.425505\n\n\n3\nAll-Bran with Extra Fiber\nK\nC\n50\n4\n0\n140\n14.0\n8.0\n0\n330\n25\n3\n1.0\n0.50\n93.704912\n\n\n4\nAlmond Delight\nR\nC\n110\n2\n2\n200\n1.0\n14.0\n8\n-1\n25\n3\n1.0\n0.75\n34.384843"
+  },
+  {
+    "objectID": "notebooks/Exploration_02.html#part-2-calculate-summary-statistics",
+    "href": "notebooks/Exploration_02.html#part-2-calculate-summary-statistics",
+    "title": "Data Exploration 02",
+    "section": "Part 2: Calculate Summary Statistics",
+    "text": "Part 2: Calculate Summary Statistics\nThe marketing team has determined that when choosing a cereal, consumers are most interested in calories, sugars, fiber, fat, and protein.\nFirst, let’s calcuate some summary statistics for these categories across the entire dataset. We’re particularly intrested in the mean, median, standard deviation, min, and max values.\nThere are multiple ways to accomplish this.\n\n# Part 2: Enter your code below to calculate summary statistics for the\n# calories, sugars, fiber, fat, and protein features.\ndf_filtered = df[[\"calories\", \"sugars\",\"fiber\", \"fat\", \"protein\"]]\n\ndf_filtered.agg({\n        \"calories\": [\"min\", \"max\", \"median\", \"mean\", \"std\"],\n        \"sugars\": [\"min\", \"max\", \"median\", \"mean\", \"std\"],\n        \"fiber\": [\"min\", \"max\", \"median\", \"mean\", \"std\"],\n        \"fat\": [\"min\", \"max\", \"median\", \"mean\", \"std\"],\n        \"protein\": [\"min\", \"max\", \"median\", \"mean\", \"std\"]\n\n}).T\n\n\n\n\n    \n\n\n\n\n\n\nmin\nmax\nmedian\nmean\nstd\n\n\n\n\ncalories\n50.0\n160.0\n110.0\n106.883117\n19.484119\n\n\nsugars\n-1.0\n15.0\n7.0\n6.922078\n4.444885\n\n\nfiber\n0.0\n14.0\n2.0\n2.151948\n2.383364\n\n\nfat\n0.0\n5.0\n1.0\n1.012987\n1.006473\n\n\nprotein\n1.0\n6.0\n3.0\n2.545455\n1.094790"
+  },
+  {
+    "objectID": "notebooks/Exploration_02.html#part-3-transform-data",
+    "href": "notebooks/Exploration_02.html#part-3-transform-data",
+    "title": "Data Exploration 02",
+    "section": "Part 3: Transform Data",
+    "text": "Part 3: Transform Data\nTo make analysis easier, you want to convert the manufacturer codes used in the dataset to the manufacturer names.\nFirst, display the count of each manufacturer code value used in the dataset (found in the mfr column).\nThen, create a new column with the appropriate manufacturer name for each entry, using this mapping:\nA = American Home Food Products\nG = General Mills\nK = Kelloggs\nN = Nabisco\nP = Post\nQ = Quaker Oats\nR = Ralston Purina\n\nNote: While the tutorial linked above uses the replace function, using the map function instead can often be much faster and more memory efficient, especially for large datasets.\n\n\n# Display the count of values for the manufacturer code (\"mfr\" column), then\n# create a new column containing the appropriate manufacturer names.\ndf[\"mfr\"] = df[\"mfr\"].map({\n    \"A\": \"American Home Food Products\",\n    \"G\": \"General Mills\",\n    \"K\": \"Kelloggs\",\n    \"N\": \"Nabisco\",\n    \"P\": \"Post\",\n    \"Q\": \"Quaker Oats\",\n    \"R\": \"Ralston Purina\"\n})"
+  },
+  {
+    "objectID": "notebooks/Exploration_02.html#part-4-visualization",
+    "href": "notebooks/Exploration_02.html#part-4-visualization",
+    "title": "Data Exploration 02",
+    "section": "Part 4: Visualization",
+    "text": "Part 4: Visualization\nLet’s do some more data exploration visually.\nImport your visualization library of choice and set any needed configuration options.\n\n# Import your visualization library\nfrom plotnine import *\n\n\nSugar Distribution\nMarketing tells us that their surveys have revealed that sugar content is the number one concern of consumers when choosing cereal.\nThey would like to see the following visualizations:\n\nA histogram plot of the sugar content in all cereals.\nA scatter plot showing the relationship between sugar and calories.\nA box plot showing the distribution of sugar content by manufacturer.\n\n\n# Create the three visualzations requested by the the marketing team\nhisto_df = ggplot(df, aes(x = 'mfr')) + \\\n    geom_histogram()\ndisplay(histo_df)\n\nscatter_plot = ggplot(df, aes(x='calories', y='sugars')) + \\\n    geom_point(color='blue', alpha=0.6)\ndisplay(scatter_plot)\n\nbox_plot = ggplot(df, aes(x='mfr', y='sugars')) + \\\n    geom_boxplot(fill='orange', color='black')\ndisplay(box_plot)\n\n/usr/local/lib/python3.11/dist-packages/plotnine/stats/stat_bin.py:109: PlotnineWarning: 'stat_bin()' using 'bins = 5'. Pick better value with 'binwidth'."
+  },
+  {
+    "objectID": "notebooks/Exploration_02.html#above-and-beyond",
+    "href": "notebooks/Exploration_02.html#above-and-beyond",
+    "title": "Data Exploration 02",
+    "section": "🌟 Above and Beyond 🌟",
+    "text": "🌟 Above and Beyond 🌟\nThe marketing team is pleased with what you’ve accomplished so far. They have a meeting with top cereal executives in the morning, and they’d like you to do as many of the following additional tasks as you have time for:\n\nWeight Watchers used to have an older points system that used this formula: (calories / 50) + (fat / 12) - (fiber / 5), but only the first 4 grams of fiber were included in the calculation. For comparison’s sake, create an additional column with the calculation for the old points system.\nMarketing really likes the boxplot of the sugar content for each cereal, they’d like similar plots for calories and fat, but using different color schemes for each chart.\n\n\ndf['fiber_capped'] = df['fiber'].clip(upper=4)\n\n# Calculate old points using the capped fiber\ndf['ww_old_points'] = (\n    (df['calories'] / 50) +\n    (df['fat'] / 12) -\n    (df['fiber_capped'] / 5)\n).round().astype(int)"
+  },
+  {
+    "objectID": "exploration.html",
+    "href": "exploration.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Data Exploration"
+    ]
+  },
+  {
+    "objectID": "exploration.html#title-2-header",
+    "href": "exploration.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Data Exploration"
+    ]
+  },
+  {
+    "objectID": "Cleansing_Exploration/project1.html",
+    "href": "Cleansing_Exploration/project1.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "Cleansing_Exploration/project2.html",
+    "href": "Cleansing_Exploration/project2.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "Cleansing_Exploration/project4.html",
+    "href": "Cleansing_Exploration/project4.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "story_telling.html",
+    "href": "story_telling.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Story Telling"
+    ]
+  },
+  {
+    "objectID": "story_telling.html#title-2-header",
+    "href": "story_telling.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Story Telling"
+    ]
+  },
+  {
+    "objectID": "cleansing.html",
+    "href": "cleansing.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Data Cleansing"
+    ]
+  },
+  {
+    "objectID": "cleansing.html#title-2-header",
+    "href": "cleansing.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Data Cleansing"
+    ]
+  },
+  {
+    "objectID": "ml.html",
+    "href": "ml.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Machine Learning"
+    ]
+  },
+  {
+    "objectID": "ml.html#title-2-header",
+    "href": "ml.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics",
+    "crumbs": [
+      "Machine Learning"
+    ]
+  },
+  {
+    "objectID": "resume.html",
+    "href": "resume.html",
+    "title": "William Russell Lee",
+    "section": "",
+    "text": "Supply Chain (Operations) Management Student with Data Science Minor\n\nw.r.lee217@gmail.com | +1 (480) 353-0673 | LinkedIn\n\n\n\nSep 2022 - Jul 2025\nBrigham Young University - Idaho Rexburg, Idaho\n\nBachelors of Science in Supply Chain (Operations) Management\n\nData Science Minor\n\nOrganizations: Supply Chain Management Society & Data Science Society\n\n\n\n\nAug 2024 - Present\nMerchandising Assistant Intership Country Supplier LLC, Ammon, Idaho\nGenerated weekly savings of $50,000 by analyzing monthly sales data and inventory levels, informing purchasing decisions and optimizing stock management for pet consumables, food, and lawn and garden equipment. Collaborated with vendors and buyers daily to ensure accurate and timely deliveries. Resolved daily issues for CAL Ranch and Coastal stores related to receiving, special orders, and cancellations, streamlining operations.\nMay 2023 - Aug 2024\nSales Solution Specialist Safe Streets USA, Rexburg, Idaho\nConducted daily analysis of client accounts to maintain compliance and identify areas for improvement, averaging 10 accounts per day. Reviewed at least 5 equipment orders and delivery schedules daily to ensure timely arrival of technicians and fulfillment of client needs. Built strong relationships with technicians, sales reps, and clients, fostering collaboration and productivity.\nJan 2023 - Apr 2023\nFront of House Team Member Chick-Fil-A, Queen Creek, Arizona\nManaged efficient receipt and placement of over 1800 customer orders monthly. Expedited and delivered more than 900 customer orders promptly, proactively adding missing items as necessary. Conducted regular reviews of inventory for cups, lids, sauces, and utensils every 30 minutes to prevent stockouts and ensure uninterrupted service.\n\n\n\n\nProgramming Languages: SQL (Basic), Python (Basic), VBA (Basic)\nExcel: XLOOKUP, Macros, Pivot Tables\nLanguages: English (Native), Spanish (Intermediate)\n\n\n\n\nAug 2020 - Jul 2022\nFull Time Service Volunteer Church of Jesus Christ of Latter-day Saints, Salt Lake City, USA | Santiago, Chile\nEmployed proactive outreach strategies, including door knocking and referrals, to connect with community members and offer volunteer service and guidance. Analyzed progression data of community members and weekly volunteer activity to identify trends and optimize support strategies.\nJan 2017 - Jun 2018\nEagle Scout Project Boy Scouts of America, Mesa, Arizona\nLed a hygiene drive ensuring foster children had access to essential hygiene necessities. Coordinated distribution of informational fliers to over 500 households in a densely populated area. Delivered over 50 bags of hygiene items to Helen’s Hope Chest, supporting underprivileged children."
+  },
+  {
+    "objectID": "resume.html#education",
+    "href": "resume.html#education",
+    "title": "William Russell Lee",
+    "section": "",
+    "text": "Sep 2022 - Jul 2025\nBrigham Young University - Idaho Rexburg, Idaho\n\nBachelors of Science in Supply Chain (Operations) Management\n\nData Science Minor\n\nOrganizations: Supply Chain Management Society & Data Science Society"
+  },
+  {
+    "objectID": "resume.html#work-experience",
+    "href": "resume.html#work-experience",
+    "title": "William Russell Lee",
+    "section": "",
+    "text": "Aug 2024 - Present\nMerchandising Assistant Intership Country Supplier LLC, Ammon, Idaho\nGenerated weekly savings of $50,000 by analyzing monthly sales data and inventory levels, informing purchasing decisions and optimizing stock management for pet consumables, food, and lawn and garden equipment. Collaborated with vendors and buyers daily to ensure accurate and timely deliveries. Resolved daily issues for CAL Ranch and Coastal stores related to receiving, special orders, and cancellations, streamlining operations.\nMay 2023 - Aug 2024\nSales Solution Specialist Safe Streets USA, Rexburg, Idaho\nConducted daily analysis of client accounts to maintain compliance and identify areas for improvement, averaging 10 accounts per day. Reviewed at least 5 equipment orders and delivery schedules daily to ensure timely arrival of technicians and fulfillment of client needs. Built strong relationships with technicians, sales reps, and clients, fostering collaboration and productivity.\nJan 2023 - Apr 2023\nFront of House Team Member Chick-Fil-A, Queen Creek, Arizona\nManaged efficient receipt and placement of over 1800 customer orders monthly. Expedited and delivered more than 900 customer orders promptly, proactively adding missing items as necessary. Conducted regular reviews of inventory for cups, lids, sauces, and utensils every 30 minutes to prevent stockouts and ensure uninterrupted service."
+  },
+  {
+    "objectID": "resume.html#skills",
+    "href": "resume.html#skills",
+    "title": "William Russell Lee",
+    "section": "",
+    "text": "Programming Languages: SQL (Basic), Python (Basic), VBA (Basic)\nExcel: XLOOKUP, Macros, Pivot Tables\nLanguages: English (Native), Spanish (Intermediate)"
+  },
+  {
+    "objectID": "resume.html#volunteer-experience",
+    "href": "resume.html#volunteer-experience",
+    "title": "William Russell Lee",
+    "section": "",
+    "text": "Aug 2020 - Jul 2022\nFull Time Service Volunteer Church of Jesus Christ of Latter-day Saints, Salt Lake City, USA | Santiago, Chile\nEmployed proactive outreach strategies, including door knocking and referrals, to connect with community members and offer volunteer service and guidance. Analyzed progression data of community members and weekly volunteer activity to identify trends and optimize support strategies.\nJan 2017 - Jun 2018\nEagle Scout Project Boy Scouts of America, Mesa, Arizona\nLed a hygiene drive ensuring foster children had access to essential hygiene necessities. Coordinated distribution of informational fliers to over 500 households in a densely populated area. Delivered over 50 bags of hygiene items to Helen’s Hope Chest, supporting underprivileged children."
+  },
+  {
+    "objectID": "Cleansing_Exploration/project5.html",
+    "href": "Cleansing_Exploration/project5.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "Cleansing_Exploration/project3.html",
+    "href": "Cleansing_Exploration/project3.html",
+    "title": "Client Report - [Insert Project Title]",
+    "section": "",
+    "text": "Paste in a template\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
+    "objectID": "index.html#title-2-header",
+    "href": "index.html#title-2-header",
+    "title": "about me",
+    "section": "",
+    "text": "MarkDown Basics"
+  },
+  {
     "objectID": "notebooks/Exploration_01_Solved.html",
     "href": "notebooks/Exploration_01_Solved.html",
     "title": "Data Exploration 01",
@@ -219,170 +425,6 @@
     "title": "Data Exploration 01",
     "section": "🌟 Above and Beyond 🌟",
     "text": "🌟 Above and Beyond 🌟\nAfter reviewing your findings, the watchdog group would like some additional questions answered:\n\nHow are things affected if you include the “made for TV movies” that have been assigned TV ratings in your analysis, but still exclude unrated movies?\nThey would also like to see a separate report that includes only TV shows.\nFor an upcoming community meeting, the group would like to present a simple chart showing “For Kids” and “For Adults” categories. The easiest way to accomplish this would be to create a new column in your data frame that maps each rating to the appropriate “For Kids” or “For Adults” label, then create a new visualization based on that column."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "index.html#title-2-header",
-    "href": "index.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics"
-  },
-  {
-    "objectID": "Cleansing_Exploration/project3.html",
-    "href": "Cleansing_Exploration/project3.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "Cleansing_Exploration/project5.html",
-    "href": "Cleansing_Exploration/project5.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "resume.html",
-    "href": "resume.html",
-    "title": "William Russell Lee",
-    "section": "",
-    "text": "Supply Chain (Operations) Management Student with Data Science Minor\n\nw.r.lee217@gmail.com | +1 (480) 353-0673 | LinkedIn\n\n\n\nSep 2022 - Jul 2025\nBrigham Young University - Idaho Rexburg, Idaho\n\nBachelors of Science in Supply Chain (Operations) Management\n\nData Science Minor\n\nOrganizations: Supply Chain Management Society & Data Science Society\n\n\n\n\nAug 2024 - Present\nMerchandising Assistant Intership Country Supplier LLC, Ammon, Idaho\nGenerated weekly savings of $50,000 by analyzing monthly sales data and inventory levels, informing purchasing decisions and optimizing stock management for pet consumables, food, and lawn and garden equipment. Collaborated with vendors and buyers daily to ensure accurate and timely deliveries. Resolved daily issues for CAL Ranch and Coastal stores related to receiving, special orders, and cancellations, streamlining operations.\nMay 2023 - Aug 2024\nSales Solution Specialist Safe Streets USA, Rexburg, Idaho\nConducted daily analysis of client accounts to maintain compliance and identify areas for improvement, averaging 10 accounts per day. Reviewed at least 5 equipment orders and delivery schedules daily to ensure timely arrival of technicians and fulfillment of client needs. Built strong relationships with technicians, sales reps, and clients, fostering collaboration and productivity.\nJan 2023 - Apr 2023\nFront of House Team Member Chick-Fil-A, Queen Creek, Arizona\nManaged efficient receipt and placement of over 1800 customer orders monthly. Expedited and delivered more than 900 customer orders promptly, proactively adding missing items as necessary. Conducted regular reviews of inventory for cups, lids, sauces, and utensils every 30 minutes to prevent stockouts and ensure uninterrupted service.\n\n\n\n\nProgramming Languages: SQL (Basic), Python (Basic), VBA (Basic)\nExcel: XLOOKUP, Macros, Pivot Tables\nLanguages: English (Native), Spanish (Intermediate)\n\n\n\n\nAug 2020 - Jul 2022\nFull Time Service Volunteer Church of Jesus Christ of Latter-day Saints, Salt Lake City, USA | Santiago, Chile\nEmployed proactive outreach strategies, including door knocking and referrals, to connect with community members and offer volunteer service and guidance. Analyzed progression data of community members and weekly volunteer activity to identify trends and optimize support strategies.\nJan 2017 - Jun 2018\nEagle Scout Project Boy Scouts of America, Mesa, Arizona\nLed a hygiene drive ensuring foster children had access to essential hygiene necessities. Coordinated distribution of informational fliers to over 500 households in a densely populated area. Delivered over 50 bags of hygiene items to Helen’s Hope Chest, supporting underprivileged children."
-  },
-  {
-    "objectID": "resume.html#education",
-    "href": "resume.html#education",
-    "title": "William Russell Lee",
-    "section": "",
-    "text": "Sep 2022 - Jul 2025\nBrigham Young University - Idaho Rexburg, Idaho\n\nBachelors of Science in Supply Chain (Operations) Management\n\nData Science Minor\n\nOrganizations: Supply Chain Management Society & Data Science Society"
-  },
-  {
-    "objectID": "resume.html#work-experience",
-    "href": "resume.html#work-experience",
-    "title": "William Russell Lee",
-    "section": "",
-    "text": "Aug 2024 - Present\nMerchandising Assistant Intership Country Supplier LLC, Ammon, Idaho\nGenerated weekly savings of $50,000 by analyzing monthly sales data and inventory levels, informing purchasing decisions and optimizing stock management for pet consumables, food, and lawn and garden equipment. Collaborated with vendors and buyers daily to ensure accurate and timely deliveries. Resolved daily issues for CAL Ranch and Coastal stores related to receiving, special orders, and cancellations, streamlining operations.\nMay 2023 - Aug 2024\nSales Solution Specialist Safe Streets USA, Rexburg, Idaho\nConducted daily analysis of client accounts to maintain compliance and identify areas for improvement, averaging 10 accounts per day. Reviewed at least 5 equipment orders and delivery schedules daily to ensure timely arrival of technicians and fulfillment of client needs. Built strong relationships with technicians, sales reps, and clients, fostering collaboration and productivity.\nJan 2023 - Apr 2023\nFront of House Team Member Chick-Fil-A, Queen Creek, Arizona\nManaged efficient receipt and placement of over 1800 customer orders monthly. Expedited and delivered more than 900 customer orders promptly, proactively adding missing items as necessary. Conducted regular reviews of inventory for cups, lids, sauces, and utensils every 30 minutes to prevent stockouts and ensure uninterrupted service."
-  },
-  {
-    "objectID": "resume.html#skills",
-    "href": "resume.html#skills",
-    "title": "William Russell Lee",
-    "section": "",
-    "text": "Programming Languages: SQL (Basic), Python (Basic), VBA (Basic)\nExcel: XLOOKUP, Macros, Pivot Tables\nLanguages: English (Native), Spanish (Intermediate)"
-  },
-  {
-    "objectID": "resume.html#volunteer-experience",
-    "href": "resume.html#volunteer-experience",
-    "title": "William Russell Lee",
-    "section": "",
-    "text": "Aug 2020 - Jul 2022\nFull Time Service Volunteer Church of Jesus Christ of Latter-day Saints, Salt Lake City, USA | Santiago, Chile\nEmployed proactive outreach strategies, including door knocking and referrals, to connect with community members and offer volunteer service and guidance. Analyzed progression data of community members and weekly volunteer activity to identify trends and optimize support strategies.\nJan 2017 - Jun 2018\nEagle Scout Project Boy Scouts of America, Mesa, Arizona\nLed a hygiene drive ensuring foster children had access to essential hygiene necessities. Coordinated distribution of informational fliers to over 500 households in a densely populated area. Delivered over 50 bags of hygiene items to Helen’s Hope Chest, supporting underprivileged children."
-  },
-  {
-    "objectID": "ml.html",
-    "href": "ml.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Machine Learning"
-    ]
-  },
-  {
-    "objectID": "ml.html#title-2-header",
-    "href": "ml.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Machine Learning"
-    ]
-  },
-  {
-    "objectID": "cleansing.html",
-    "href": "cleansing.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Data Cleansing"
-    ]
-  },
-  {
-    "objectID": "cleansing.html#title-2-header",
-    "href": "cleansing.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Data Cleansing"
-    ]
-  },
-  {
-    "objectID": "story_telling.html",
-    "href": "story_telling.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Story Telling"
-    ]
-  },
-  {
-    "objectID": "story_telling.html#title-2-header",
-    "href": "story_telling.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Story Telling"
-    ]
-  },
-  {
-    "objectID": "Cleansing_Exploration/project4.html",
-    "href": "Cleansing_Exploration/project4.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "Cleansing_Exploration/project2.html",
-    "href": "Cleansing_Exploration/project2.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "Cleansing_Exploration/project1.html",
-    "href": "Cleansing_Exploration/project1.html",
-    "title": "Client Report - [Insert Project Title]",
-    "section": "",
-    "text": "Paste in a template\n\n\n\n\n Back to top"
-  },
-  {
-    "objectID": "exploration.html",
-    "href": "exploration.html",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Data Exploration"
-    ]
-  },
-  {
-    "objectID": "exploration.html#title-2-header",
-    "href": "exploration.html#title-2-header",
-    "title": "about me",
-    "section": "",
-    "text": "MarkDown Basics",
-    "crumbs": [
-      "Data Exploration"
-    ]
   },
   {
     "objectID": "notebooks/Exploration_01.html#mpaa-movie-ratings",
