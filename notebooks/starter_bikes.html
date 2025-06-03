@@ -345,16 +345,474 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="cell-0" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras <span class="im">import</span> layers</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bikes.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-0" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Core Libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Scikit-learn for preprocessing and metrics</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># TensorFlow / Keras for neural networks</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.models <span class="im">import</span> Sequential</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> Dense</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.callbacks <span class="im">import</span> EarlyStopping</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/byui-cse/cse450-course/master/data/bikes.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-1" class="cell" data-outputid="7fa94e11-298a-4456-dbc1-59d7c76d3b0d" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(daily[<span class="st">'dteday'</span>].<span class="bu">max</span>())</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(daily.tail())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2023-10-31 00:00:00
+         dteday     temp_c  feels_like_c       hum  windspeed  holiday  \
+4682 2023-10-27  20.225000     20.229167  0.730217   8.341667        0   
+4683 2023-10-28  21.537500     21.537500  0.712254   7.250000        0   
+4684 2023-10-29  20.595833     20.595833  0.780079   8.904167        0   
+4685 2023-10-30  17.129167     17.129167  0.762071  16.133333        0   
+4686 2023-10-31  10.258333      9.562500  0.513467  12.762500        0   
+
+      workingday  season  weathersit  casual  registered  count  day_of_week  \
+4682           1       4    1.166667    6894       11689  18583            4   
+4683           0       4    1.041667    9505       10669  20174            5   
+4684           0       4    1.375000    7965        9199  17164            6   
+4685           1       4    1.625000    4005        9180  13185            0   
+4686           1       4    1.458333    4072       10630  14702            1   
+
+      month   day_sin   day_cos  month_sin  month_cos  
+4682     10 -0.433884 -0.900969  -0.866025        0.5  
+4683     10 -0.974928 -0.222521  -0.866025        0.5  
+4684     10 -0.781831  0.623490  -0.866025        0.5  
+4685     10  0.000000  1.000000  -0.866025        0.5  
+4686     10  0.781831  0.623490  -0.866025        0.5  </code></pre>
+</div>
+</div>
+<div id="cell-2" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Chunk 1: Data Preparation (Updated for Dictionary)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse date and create datetime features</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>bikes[<span class="st">'dteday'</span>] <span class="op">=</span> pd.to_datetime(bikes[<span class="st">'dteday'</span>])</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by day to get total rentals per day</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>daily <span class="op">=</span> bikes.groupby(<span class="st">'dteday'</span>).agg({</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'temp_c'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feels_like_c'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'hum'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'windspeed'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'holiday'</span>: <span class="st">'first'</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'workingday'</span>: <span class="st">'first'</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'season'</span>: <span class="st">'first'</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'weathersit'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'casual'</span>: <span class="st">'sum'</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'registered'</span>: <span class="st">'sum'</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Create total count</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>daily[<span class="st">'count'</span>] <span class="op">=</span> daily[<span class="st">'casual'</span>] <span class="op">+</span> daily[<span class="st">'registered'</span>]</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Time-based features</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>daily[<span class="st">'day_of_week'</span>] <span class="op">=</span> daily[<span class="st">'dteday'</span>].dt.dayofweek</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>daily[<span class="st">'month'</span>] <span class="op">=</span> daily[<span class="st">'dteday'</span>].dt.month</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Cyclical encoding for day of week and month</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>daily[<span class="st">'day_sin'</span>] <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> daily[<span class="st">'day_of_week'</span>] <span class="op">/</span> <span class="dv">7</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>daily[<span class="st">'day_cos'</span>] <span class="op">=</span> np.cos(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> daily[<span class="st">'day_of_week'</span>] <span class="op">/</span> <span class="dv">7</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>daily[<span class="st">'month_sin'</span>] <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> daily[<span class="st">'month'</span>] <span class="op">/</span> <span class="dv">12</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>daily[<span class="st">'month_cos'</span>] <span class="op">=</span> np.cos(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> daily[<span class="st">'month'</span>] <span class="op">/</span> <span class="dv">12</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Final features</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> [<span class="st">'temp_c'</span>, <span class="st">'feels_like_c'</span>, <span class="st">'hum'</span>, <span class="st">'windspeed'</span>, <span class="st">'holiday'</span>,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>            <span class="st">'workingday'</span>, <span class="st">'season'</span>, <span class="st">'weathersit'</span>, <span class="st">'day_sin'</span>, <span class="st">'day_cos'</span>,</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>            <span class="st">'month_sin'</span>, <span class="st">'month_cos'</span>]</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>target <span class="op">=</span> <span class="st">'count'</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Use October for testing</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>train_bikes <span class="op">=</span> daily[daily[<span class="st">'dteday'</span>] <span class="op">&lt;</span> <span class="st">'2023-10-01'</span>]</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>test_bikes <span class="op">=</span> daily[(daily[<span class="st">'dteday'</span>] <span class="op">&gt;=</span> <span class="st">'2023-10-01'</span>) <span class="op">&amp;</span> (daily[<span class="st">'dteday'</span>] <span class="op">&lt;=</span> <span class="st">'2023-10-31'</span>)]</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> train_bikes[features]</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_bikes[target]</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> test_bikes[features]</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_bikes[target]</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize features</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>X_test_scaled <span class="op">=</span> scaler.transform(X_test)</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="e797f0e8-fb01-41e6-fcd4-7dc5eb0f84aa" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Chunk 2: Model Training, Prediction, and Visualization</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the model</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Sequential([</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">64</span>, input_dim<span class="op">=</span>X_train.shape[<span class="dv">1</span>], activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">32</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    Dense(<span class="dv">1</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>, loss<span class="op">=</span><span class="st">'mse'</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>early_stop <span class="op">=</span> EarlyStopping(monitor<span class="op">=</span><span class="st">'val_loss'</span>, patience<span class="op">=</span><span class="dv">10</span>, restore_best_weights<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(X_train_scaled, y_train,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                    validation_split<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                    epochs<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                    callbacks<span class="op">=</span>[early_stop],</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                    verbose<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on test data (Nov–Dec)</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model.predict(X_test_scaled).flatten()</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create results DataFrame</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> test_bikes[[<span class="st">'dteday'</span>]].copy()</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>results[<span class="st">'predicted_count'</span>] <span class="op">=</span> predictions</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>results[<span class="st">'actual_count'</span>] <span class="op">=</span> y_test.values</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Save predictions to CSV</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>results.to_csv(<span class="st">'bike_predictions_nov_dec.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot predictions vs actuals</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>plt.plot(results[<span class="st">'dteday'</span>], results[<span class="st">'actual_count'</span>], label<span class="op">=</span><span class="st">'Actual'</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>plt.plot(results[<span class="st">'dteday'</span>], results[<span class="st">'predicted_count'</span>], label<span class="op">=</span><span class="st">'Predicted'</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Date'</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Bike Rentals'</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Predicted vs Actual Rentals (Nov–Dec)'</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch 1/100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.11/dist-packages/keras/src/layers/core/dense.py:87: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">2s</span> 4ms/step - loss: 70424816.0000 - val_loss: 113714456.0000
+
+Epoch 2/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 69319712.0000 - val_loss: 108094120.0000
+
+Epoch 3/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 65332012.0000 - val_loss: 93672584.0000
+
+Epoch 4/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 53595780.0000 - val_loss: 71537792.0000
+
+Epoch 5/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 39475808.0000 - val_loss: 48906092.0000
+
+Epoch 6/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 25133076.0000 - val_loss: 33694528.0000
+
+Epoch 7/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 17806370.0000 - val_loss: 25685034.0000
+
+Epoch 8/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 14929171.0000 - val_loss: 21343044.0000
+
+Epoch 9/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 13379225.0000 - val_loss: 18579612.0000
+
+Epoch 10/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 11583489.0000 - val_loss: 16696055.0000
+
+Epoch 11/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 10681658.0000 - val_loss: 15350994.0000
+
+Epoch 12/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 10192391.0000 - val_loss: 14327760.0000
+
+Epoch 13/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 9464767.0000 - val_loss: 13581077.0000
+
+Epoch 14/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 4ms/step - loss: 9312943.0000 - val_loss: 12862096.0000
+
+Epoch 15/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 5ms/step - loss: 9067448.0000 - val_loss: 12379151.0000
+
+Epoch 16/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 4ms/step - loss: 8569479.0000 - val_loss: 12206759.0000
+
+Epoch 17/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 5ms/step - loss: 8200425.5000 - val_loss: 11845378.0000
+
+Epoch 18/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 8044232.0000 - val_loss: 11544975.0000
+
+Epoch 19/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 8199983.5000 - val_loss: 11423943.0000
+
+Epoch 20/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7992178.0000 - val_loss: 11225510.0000
+
+Epoch 21/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7937254.0000 - val_loss: 11010642.0000
+
+Epoch 22/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7774034.5000 - val_loss: 10963210.0000
+
+Epoch 23/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7418599.5000 - val_loss: 11082862.0000
+
+Epoch 24/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7302108.0000 - val_loss: 11027010.0000
+
+Epoch 25/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7468162.5000 - val_loss: 10925253.0000
+
+Epoch 26/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7667901.0000 - val_loss: 10691827.0000
+
+Epoch 27/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7577240.5000 - val_loss: 10710919.0000
+
+Epoch 28/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 4ms/step - loss: 7587403.0000 - val_loss: 10595903.0000
+
+Epoch 29/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7521169.5000 - val_loss: 10452062.0000
+
+Epoch 30/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7478130.0000 - val_loss: 10501903.0000
+
+Epoch 31/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7500408.0000 - val_loss: 10533403.0000
+
+Epoch 32/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7334494.0000 - val_loss: 10549941.0000
+
+Epoch 33/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7265127.5000 - val_loss: 10694477.0000
+
+Epoch 34/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7366901.5000 - val_loss: 10454693.0000
+
+Epoch 35/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7210457.0000 - val_loss: 10596307.0000
+
+Epoch 36/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 5ms/step - loss: 7338425.5000 - val_loss: 10472235.0000
+
+Epoch 37/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 4ms/step - loss: 6967924.0000 - val_loss: 10314968.0000
+
+Epoch 38/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 5ms/step - loss: 7318820.5000 - val_loss: 10270708.0000
+
+Epoch 39/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7068828.5000 - val_loss: 10651185.0000
+
+Epoch 40/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7181523.0000 - val_loss: 10474749.0000
+
+Epoch 41/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7175226.0000 - val_loss: 10387621.0000
+
+Epoch 42/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7219342.5000 - val_loss: 10123820.0000
+
+Epoch 43/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7197482.5000 - val_loss: 10085655.0000
+
+Epoch 44/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7163026.0000 - val_loss: 9921490.0000
+
+Epoch 45/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7312141.0000 - val_loss: 10088922.0000
+
+Epoch 46/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6910817.5000 - val_loss: 10365882.0000
+
+Epoch 47/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7308799.5000 - val_loss: 9977747.0000
+
+Epoch 48/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7313624.0000 - val_loss: 10212233.0000
+
+Epoch 49/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6759995.5000 - val_loss: 10160584.0000
+
+Epoch 50/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7037776.0000 - val_loss: 10263839.0000
+
+Epoch 51/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7218991.5000 - val_loss: 10135973.0000
+
+Epoch 52/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7408150.0000 - val_loss: 10003939.0000
+
+Epoch 53/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7018993.5000 - val_loss: 9859009.0000
+
+Epoch 54/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7004226.0000 - val_loss: 9934395.0000
+
+Epoch 55/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7328979.0000 - val_loss: 10153591.0000
+
+Epoch 56/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 6883759.5000 - val_loss: 9943611.0000
+
+Epoch 57/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7001976.5000 - val_loss: 10043222.0000
+
+Epoch 58/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 4ms/step - loss: 6947211.0000 - val_loss: 9815245.0000
+
+Epoch 59/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 4ms/step - loss: 7157318.0000 - val_loss: 9762445.0000
+
+Epoch 60/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 4ms/step - loss: 6977111.5000 - val_loss: 9830232.0000
+
+Epoch 61/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 5ms/step - loss: 7131560.0000 - val_loss: 10223201.0000
+
+Epoch 62/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 4ms/step - loss: 6967989.0000 - val_loss: 9954341.0000
+
+Epoch 63/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7139183.0000 - val_loss: 9955302.0000
+
+Epoch 64/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6830925.5000 - val_loss: 9841929.0000
+
+Epoch 65/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7112849.0000 - val_loss: 10012460.0000
+
+Epoch 66/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7124915.0000 - val_loss: 9493503.0000
+
+Epoch 67/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7223541.0000 - val_loss: 9616753.0000
+
+Epoch 68/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6878581.5000 - val_loss: 10126824.0000
+
+Epoch 69/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6650340.5000 - val_loss: 10029972.0000
+
+Epoch 70/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 7034530.5000 - val_loss: 9778288.0000
+
+Epoch 71/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6990830.0000 - val_loss: 9854739.0000
+
+Epoch 72/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6787386.5000 - val_loss: 9544423.0000
+
+Epoch 73/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 3ms/step - loss: 7070328.5000 - val_loss: 9662549.0000
+
+Epoch 74/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6939409.0000 - val_loss: 9968430.0000
+
+Epoch 75/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6815552.5000 - val_loss: 10148884.0000
+
+Epoch 76/100
+
+<span class="ansi-bold">117/117</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 3ms/step - loss: 6747764.5000 - val_loss: 9848731.0000
+
+<span class="ansi-bold">1/1</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 70ms/step
+</pre>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="starter_bikes_files/figure-html/cell-5-output-4.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
 </div>
 
 
